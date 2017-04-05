@@ -1,0 +1,167 @@
+polizas<-seq(0,80,by=1)
+polizas
+n=80
+p=0.20
+pgm<-dbinom(polizas,n,prob=p)
+pgm
+
+
+#DISTRIBUCION ACUMULADA P(X<=x)
+FXGM<-pbinom(polizas,n,prob=p)
+FXGM
+plot(polizas,FXGM, type="s", ylab="probabilidad acumulada")
+points(polizas,pgm,type="b",col="red")
+media_gm=n*p
+media_gm
+varianza_gm=n*p*(1-p)
+varianza_gm
+desvest_gm=varianza_gm^0.5
+desvest_gm
+
+#OBTENGA EL VALOR DE E[(x^2)-2x]
+val_esp<-sum(((polizas^2)-2*polizas)*pgm)
+val_esp
+
+#percentiles
+gm_per<-seq(0,1,by=0.05)
+gm_per
+percentil70<-qbinom(0.70,n,prob=p)
+percentil70
+percentiles_gm<- qbinom( gm_per ,n,prob=p)
+percentiles_gm
+informe_gm_percentiles<-cbind(gm_per,percentiles_gm)
+informe_gm_percentiles
+
+#CALCULAR LA PROBABILIDAD DE QUE TENGAMOS 5 SINIESTROS
+Probgm_1<-dbinom(5,n,prob=p)
+Probgm_1
+
+#CALCULAR LA PROBABILIDAD QUE TENGAMOS MENOS DE 4
+Probgm_2<-pbinom(4,n,pro=p)
+Probgm_2
+
+#CALCULAR LA PROBABILIDAD DE TENER P(1<=x<=8)
+Probgm_3=pbinom(7,n,prob=p)-pbinom(0,n,pro=p)
+Probgm_3
+
+##SIMULA VALORES CON DISTRIBUCION BINOMIAL, ENTEROS
+simulados_gm<-rbinom(10000,n,prob=p)
+simulados_gm
+min(simulados_gm)
+max(simulados_gm)
+hist(simulados_gm)
+media_gmsim<-mean(simulados_gm)
+media_gmsim
+varianza_gmsim<-var(simulados_gm)
+varianza_gmsim
+
+
+#El banco A ofrece prestamos educativos a estudiantes de la ciudad de Nueva York,
+#la tasa de incumplimiento es de 45, y la probabilidad de que sean a nivel posgrado
+#es de un 32%, y licenciatura 25%
+#L=45 para todas
+#calcular:
+#*distribución acumulada
+#*media
+#*varianza
+#*percentiles
+#*desv. est.
+#*Valor esperado E[2x+x^2]
+#*probabilidades para ambos casos:
+#  a)P[x<=5]
+#  b)P[7<=x<=11]
+#  c)P[x<=7] U P[x>=3]
+#*Realizar las simulaciones para ambos casos
+#*Comparar que tan similares son a la distribución original
+
+#dpois(x, lambda)
+#ppois(q, lambda, lower.tail = TRUE)
+#qpois(p, lambda, lower.tail = TRUE)
+#rpois(n, lambda)
+######x,q: vector de cuantiles.
+######p: vector de probabilidades.
+######n: número de observaciones. Si no se especifica se toma igual a 1
+######log, log.p: son valores lógicos; si son TRUE, las probabilidades p se dan como
+######probabilities log(p).
+######lower.tail: es un valor lógico; si es TRUE (por defecto), las probabilidades son
+######P[X ≤x], en otro caso P[X > x].
+
+
+prestamo<-seq(0,80,by=1)
+prestamo
+l=45
+x1=0.32
+x2=0.25
+
+#Distribucion acumulada
+FXGM_1<-dpois(prestamo,l*x1)
+FXGM_1
+FXGM_1.1<-dpois(prestamo,l*x2)
+FXGM_1.1
+Fxgm_2<-ppois(prestamo, l*x1)
+Fxgm_2
+Fxgm_2.1<-ppois(prestamo, l*x2)
+Fxgm_2.1
+
+#media
+media_pres=l*x1
+media_pres
+media_press=l*x2
+media_press
+
+#varianza
+varianza_pres=l*x1
+varianza_pres
+varianza_press=l*x2
+varianza_press
+
+#des.est.
+desest_1=varianza_pres^0.5
+desest_1
+desest_2=varianza_press^0.5
+desest_2
+
+#Valor esperado
+val_esp1<-sum(((prestamo^2)-2*prestamo)*FXGM_1)
+val_esp1
+val_esp2<-sum(((prestamo^2)-2*prestamo)*FXGM_1.1)
+val_esp2
+
+#probabilidad P[x<=5]
+Probgm_1<-ppois(5,l*x1)
+Probgm_1
+Probgm_2<-ppois(5,l*x2)
+Probgm_2
+
+#probabilidad P[7<=x<=11]
+Probgm_3=ppois(11,l*x1)-ppois(7,l*x1)
+Probgm_3
+Probgm_4=ppois(11,l*x2)-ppois(7,l*x2)
+Probgm_4
+
+#probabilidad P[x<=7] U P[x>=3]
+Probgm_5=ppois(7,l*x1)-ppois(3,l*x1)
+Probgm_5
+Probgm_6=ppois(7,l*x2)-ppois(3,l*x2)
+Probgm_6
+
+##SIMULA VALORES CON DISTRIBUCION Poisson, ENTEROS
+simulados_gm<-rpois(10000,l*x1)
+simulados_gm
+min(simulados_gm)
+max(simulados_gm)
+hist(simulados_gm)
+media_gmsim<-mean(simulados_gm)
+media_gmsim
+varianza_gmsim<-var(simulados_gm)
+varianza_gmsim
+
+simulados_gm<-rpois(10000,l*x2)
+simulados_gm
+min(simulados_gm)
+max(simulados_gm)
+hist(simulados_gm)
+media_gmsim<-mean(simulados_gm)
+media_gmsim
+varianza_gmsim<-var(simulados_gm)
+varianza_gmsim
